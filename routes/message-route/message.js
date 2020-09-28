@@ -8,23 +8,23 @@ const Form = require("../../models/form.contactme.model");
 
 //Nodemailer Set-up
 
-const auth = {
-  auth: {
-    api_key: process.env.MAILGUN_KEY,
-    domain: process.env.MAILGUN_DOMAIN,
-  },
-};
+// const auth = {
+//   auth: {
+//     api_key: process.env.MAILGUN_KEY,
+//     domain: process.env.MAILGUN_DOMAIN,
+//   },
+// };
 // proxy: 'http://user:pass@localhost:8080' // optional proxy, default is false
 
-let transporter = nodemailer.createTransport(mailGunTrans(auth));
+// let transporter = nodemailer.createTransport(mailGunTrans(auth));
 
-// let transporter = nodemailer.createTransport({
-//   host: "smtp.gmail.com",
-//   auth: {
-//     user: keys.gmail.user,
-//     password: keys.gmail.passwd,
-//   },
-// });
+let transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: process.env.GMAIL_USER,
+    password: process.env.GMAIL_KEY,
+  },
+});
 
 router.get("/api/contact-me", (req, res, next) => {
   res.send("Hello");
