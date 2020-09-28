@@ -4,14 +4,14 @@ const nodemailer = require("nodemailer");
 const mailGunTrans = require("nodemailer-mailgun-transport");
 const Form = require("../../models/form.contactme.model");
 
-const keys = require("../../configs/keys");
+// const keys = require("../../configs/keys");
 
 //Nodemailer Set-up
 
 const auth = {
   auth: {
-    api_key: keys.mailGun.key,
-    domain: keys.mailGun.domain,
+    api_key: process.env.MAILGUN_KEY,
+    domain: process.env.MAILGUN_DOMAIN,
   },
 };
 // proxy: 'http://user:pass@localhost:8080' // optional proxy, default is false
@@ -45,7 +45,7 @@ router.post("/api/contact-me", (req, res, next) => {
 
   const mailOptions = {
     from: dataMessage.email,
-    to: keys.gmail.user,
+    to: process.env.GMAIL_USER,
     subject: `Message from ${dataMessage.email}`,
     html: `
       <div style="text-align: center;">
@@ -58,7 +58,7 @@ router.post("/api/contact-me", (req, res, next) => {
   };
 
   return transporter.sendMail(mailOptions, (error, data) => {
-    // console.log("SENDING EMAIL TEST");
+    console.log("SENDING EMAIL TEST");
     error ? res.json("Error occurs") : res.json("Message sent");
   });
 });
