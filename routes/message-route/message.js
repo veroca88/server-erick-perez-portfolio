@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Router } = require("express");
 const router = new Router();
 const nodemailer = require("nodemailer");
@@ -26,11 +27,11 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-router.get("/api/contact-me", (req, res, next) => {
+router.get("/contact-me", (req, res, next) => {
   res.send("Hello");
 });
 
-router.post("/api/contact-me", (req, res, next) => {
+router.post("/contact-me", (req, res, next) => {
   const { subject, email, message } = req.body;
   // console.log("Checking", req.body);
   const dataMessage = req.body;
