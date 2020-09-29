@@ -37,31 +37,48 @@ router.post("/contact-me", (req, res, next) => {
   const dataMessage = req.body;
 
   if (!subject || !email || !message) {
-    res.status(401).json({
+    res.render({
       errorMessage:
         "All fields are mandatory. Please provide your subject, email and message.",
     });
     return;
   }
 
-  const mailOptions = {
-    from: dataMessage.email,
-    to: process.env.GMAIL_USER,
-    subject: `Message from ${dataMessage.email}`,
-    html: `
-      <div style="text-align: center;">
-        <h2>👋 Hi Erick you have a new Message!! 👋</h2>
-        <h2>From: ${dataMessage.email}</h2>
-        <h2>Subject: ${dataMessage.subject}</h2>
-        <p>${dataMessage.message}</p>
-      </div>
-    `,
-  };
-
-  return transporter.sendMail(mailOptions, (error, data) => {
-    console.log("SENDING EMAIL TEST");
-    error ? res.json("Error occurs") : res.json("Message sent");
-  });
+  return transporter.sendMail(
+    {
+      from: dataMessage.email,
+      to: process.env.GMAIL_USER,
+      subject: `Message from ${dataMessage.email}`,
+      html: `
+        <div style="text-align: center;">
+          <h2>👋 Hi Erick you have a new Message!! 👋</h2>
+          <h2>From: ${dataMessage.email}</h2>
+          <h2>Subject: ${dataMessage.subject}</h2>
+          <p>${dataMessage.message}</p>
+        </div>
+      `,
+    },
+    (err, info) => {
+      console.log("info :", info);
+      console.log("error :", err);
+    }
+  );
 });
 
 module.exports = router;
+
+// const mailOptions = {
+//   from: dataMessage.email,
+//   to: process.env.GMAIL_USER,
+//   subject: `Message from ${dataMessage.email}`,
+//   html: `
+//     <div style="text-align: center;">
+//       <h2>👋 Hi Erick you have a new Message!! 👋</h2>
+//       <h2>From: ${dataMessage.email}</h2>
+//       <h2>Subject: ${dataMessage.subject}</h2>
+//       <p>${dataMessage.message}</p>
+//     </div>
+//   `,
+// };
+
+// return transporter.sendMail(mailOptions, (error, data) => {
