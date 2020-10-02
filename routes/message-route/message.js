@@ -18,7 +18,7 @@ const auth = {
 
 let transporter = nodemailer.createTransport(mailGunTrans(auth));
 
-router.post("/contact-me", (req, res, next) => {
+router.post("/api/contact-me", (req, res, next) => {
   const { subject, email, message } = req.body;
   console.log("Checking", req.body);
   const dataMessage = req.body;

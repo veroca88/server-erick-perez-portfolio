@@ -12,15 +12,27 @@ const app = express();
 // require database configuration
 require("./configs/db.configs");
 
-app.use(
-  cors({
-    // origin: [process.env.FRONTEND_POINT],
-    //this point is react is going to run and goes in env file too
-    origin: true,
-    credentials: true, //this need to setup on the frontend as well
-    //in axios withCredentials: true
-  })
-);
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", CLIENT_ORIGIN);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
+  res.header("Access-Control-Allow-Credentials", true);
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
+// app.use(
+//   cors({
+//     origin: true,
+//     credentials: true,
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   })
+// );
 
 app.use(logger("dev"));
 app.use(express.json());
